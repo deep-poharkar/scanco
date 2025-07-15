@@ -1,0 +1,20 @@
+name: development-policy
+metadata:
+  description: Relaxed security policy for development environments
+  author: Security Team
+  version: "1.0"
+
+rules:
+  # Only block CRITICAL vulnerabilities
+  max_severity: HIGH
+
+  # Block specific dangerous CVEs even in development
+  blocked_cves:
+    - CVE-2021-44228  # Log4Shell - always block this
+    - CVE-2021-45046  # Log4Shell variant
+
+  # Allow any base image in development
+  allowed_base_images: []  # Empty list means all images allowed
+
+  # Only block the most severe vulnerabilities
+  min_cvss: 9.0  # Only block critical CVSS scores 

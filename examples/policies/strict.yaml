@@ -1,0 +1,26 @@
+name: strict-policy
+metadata:
+  description: Strict security policy for production environments
+  author: Security Team
+  version: "1.0"
+
+rules:
+  # Block any vulnerabilities higher than MEDIUM severity
+  max_severity: MEDIUM
+
+  # Block specific known CVEs
+  blocked_cves:
+    - CVE-2021-44228  # Log4Shell
+    - CVE-2021-45046  # Log4Shell variant
+    - CVE-2022-22965  # Spring4Shell
+
+  # Only allow specific base images
+  allowed_base_images:
+    - alpine:3.18
+    - alpine:3.19
+    - ubuntu:22.04
+    - debian:12-slim
+    - "nginx:*-alpine"  # Allow any nginx alpine-based image
+
+  # Block any vulnerabilities with CVSS score >= 7.0
+  min_cvss: 7.0 
