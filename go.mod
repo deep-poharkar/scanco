@@ -4,6 +4,8 @@ go 1.21
 
 require (
 	github.com/google/go-containerregistry v0.19.0
+	github.com/hashicorp/go-version v1.7.0
+	golang.org/x/time v0.5.0
 )
 
 require (

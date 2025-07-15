@@ -6,7 +6,7 @@
 *.dylib
 scanco
 
-# Test binary, built with `go test -c`
+# Test binary, built with `go test -c`s
 *.test
 
 # Output of the go coverage tool
