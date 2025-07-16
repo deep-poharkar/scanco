@@ -156,14 +156,6 @@ Image validation failed:
   - severity: Vulnerability severity HIGH exceeds maximum allowed MEDIUM
 ```
 
-## Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-## Security
-
-For security issues, please email security@yourdomain.com or submit a security advisory on GitHub.
-
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details
+MIT License
