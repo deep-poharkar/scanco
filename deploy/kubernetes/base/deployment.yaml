@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scanco-webhook
+  namespace: default
+  labels:
+    app: scanco-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scanco-webhook
+  template:
+    metadata:
+      labels:
+        app: scanco-webhook
+    spec:
+      containers:
+      - name: webhook
+        image: scanco-webhook:latest
+        imagePullPolicy: Never # Use locally built image
+        args:
+        - "--cert=/certs/server.crt"
+        - "--key=/certs/server.key"
+        - "--port=8443"
+        - "--policy=/config/policy.yaml"
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - name: webhook-certs
+          mountPath: /certs
+          readOnly: true
+        - name: webhook-config
+          mountPath: /config
+          readOnly: true
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+      volumes:
+      - name: webhook-certs
+        secret:
+          secretName: webhook-certs
+      - name: webhook-config
+        configMap:
+          name: webhook-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scanco-webhook-svc
+  namespace: default
+spec:
+  selector:
+    app: scanco-webhook
+  ports:
+  - port: 443
+    targetPort: 8443
+  type: ClusterIP 

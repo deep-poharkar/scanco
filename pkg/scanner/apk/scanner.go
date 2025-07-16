@@ -51,3 +51,4 @@ func (s *Scanner) ScanPackages(content []byte) ([]scanner.Package, error) {
 
 	return packages, reader.Err()
 }
+ 

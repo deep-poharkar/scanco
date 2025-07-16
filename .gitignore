@@ -6,7 +6,7 @@
 *.dylib
 scanco
 
-# Test binary, built with `go test -c`s
+# Test binary, built with `go test -c`
 *.test
 
 # Output of the go coverage tool
@@ -38,3 +38,34 @@ _output/
 # Environment files
 .env
 .env.local 
+
+# Generated TLS Certificates
+*.crt
+*.key
+*.pem
+*.csr
+*.srl
+deploy/kubernetes/certs/
+
+# Local Kubernetes configs
+*-local.yaml
+*-local.json
+kubeconfig
+.kube/
+
+# User-specific overlays
+deploy/kubernetes/overlays/local/
+
+# Docker build artifacts
+*.tar
+.docker/
+
+# Temporary files
+*.tmp
+temp/
+tmp/
+
+# Secrets
+*secret*.yaml
+*secret*.yml
+*secret*.json
