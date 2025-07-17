@@ -118,22 +118,41 @@ DOCKER_PASSWORD=your_password
 ./scanco scan --verbose nginx:latest
 ```
 
+Here's how the CLI output looks in action:
+
+![ScanCo CLI Output](assets/scanco.gif)
+
 ### Webhook Mode (for Kubernetes)
 
 ```bash
 # Run as webhook server
-./scanco webhook --port 8443 --cert-file cert.pem --key-file key.pem
+./scanco webhook --port 8443 --cert-file cert.pem --key-file key.pem --policy policy.yaml
 ```
 
-The webhook mode runs an HTTPS server that implements the Kubernetes admission webhook interface. It uses the same scanning and policy logic as the CLI mode but serves it via HTTPS for Kubernetes integration.
+The webhook mode runs an HTTPS server that implements the Kubernetes admission webhook interface. It uses the same scanning and policy logic as the CLI mode but serves it via HTTPS for Kubernetes integration. The webhook provides detailed real-time output in the CLI, showing:
+
+- Incoming validation requests
+- Images being scanned
+- Package scanning results
+- Vulnerability findings
+- Policy evaluation results
+- Final validation decisions
+
+Here's how the webhook output looks in action:
+
+![ScanCo Webhook Output](assets/scanco_webhook.png)
 
 Webhook flags:
 
 ```bash
---port int         Port to listen on (default 8443)
---cert-file path  Path to TLS certificate file (required)
---key-file path   Path to TLS key file (required)
+--port int           Port to listen on (default 8443)
+--cert-file path    Path to TLS certificate file (required)
+--key-file path     Path to TLS key file (required)
+--policy path       Path to security policy file
+--api-key string    NVD API key (optional)
 ```
+
+Example output when validating an image:
 
 ## Kubernetes Integration
 

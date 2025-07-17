@@ -1,15 +1,13 @@
 #!/bin/bash
-set -e
 
 # Generate CA key and certificate
 openssl genrsa -out ca.key 2048
-openssl req -new -x509 -days 365 -key ca.key -subj "/O=scanco/CN=admission-ca" -out ca.crt
+openssl req -x509 -new -nodes -key ca.key -sha256 -days 365 -out ca.crt -subj "/O=scanco/CN=admission-ca"
 
-# Generate server key and certificate signing request
+# Generate server key
 openssl genrsa -out server.key 2048
-openssl req -new -key server.key -subj "/O=scanco/CN=scanco-webhook-svc.default.svc" -out server.csr
 
-# Create certificate config
+# Generate server CSR
 cat > server.conf << EOF
 [req]
 req_extensions = v3_req
@@ -27,15 +25,15 @@ subjectAltName = @alt_names
 DNS.1 = scanco-webhook-svc
 DNS.2 = scanco-webhook-svc.default
 DNS.3 = scanco-webhook-svc.default.svc
+DNS.4 = scanco-webhook-svc.default.svc.cluster.local
 EOF
 
-# Sign the server certificate
-openssl x509 -req -days 365 -in server.csr \
-    -CA ca.crt -CAkey ca.key -CAcreateserial \
-    -extfile server.conf -extensions v3_req \
-    -out server.crt
+openssl req -new -key server.key -out server.csr -subj "/O=scanco/CN=scanco-webhook-svc.default.svc" -config server.conf
 
-# Clean up temporary files
+# Sign server certificate
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365 -extensions v3_req -extfile server.conf
+
+# Clean up
 rm server.conf server.csr ca.srl
 
 echo "Certificates generated successfully!" 

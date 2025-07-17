@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webhook-config
+  namespace: default
+data:
+  policy.yaml: |
+    name: test-policy
+    metadata:
+      description: Test security policy for admission controller
+      author: ScanCo
+      version: "1.0"
+    rules:
+      max_severity: MEDIUM
+      blocked_cves:
+        - CVE-2021-44228
+        - CVE-2022-22965
+      allowed_base_images:
+        - docker.io/library/alpine:latest
+        - docker.io/library/ubuntu:22.04
+      min_cvss: 7.0 
